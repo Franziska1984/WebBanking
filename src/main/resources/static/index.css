@@ -1,0 +1,7 @@
+@charset "UTF-8";
+head,body,main {
+    background-color: silver;
+    color: teal;  
+    text-align: center;
+    margin-left: auto; margin-right: auto;
+}
