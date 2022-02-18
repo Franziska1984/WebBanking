@@ -1,5 +1,5 @@
 @charset "UTF-8";
-head,body,main {
+head,body,main,div {
     background-color: silver;
     color: teal;  
     text-align: center;

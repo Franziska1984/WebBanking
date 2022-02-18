@@ -41,7 +41,7 @@ public class ViewImpl implements View {
 		return html;
 	}
 
-	@GetMapping("/test.json")
+	@GetMapping("test.json")
 	@ResponseBody
 	public String getJSON() {
 		String empfaenger = zahlung.getEmpfaenger();
@@ -50,14 +50,14 @@ public class ViewImpl implements View {
 		Double betrag = zahlung.getBetrag();
 		String waehrung = zahlung.getWaehrung();
 		String verwendungszweck = zahlung.getVerwendungszweck();
-		return "{\"Zahlung\":{" 
+		return "{" 
 				+ " \"Empfaenger\": " + "\"" + empfaenger + "\"," 
 		        + " \"Iban\": " + "\"" + iban + "\","
 				+ " \"Bic\": " + "\"" + bic + "\","
 				+ " \"Betrag\": " + "\"" + betrag + "\"," 
 				+ " \"Waehrung\": " + "\""+ waehrung + "\","
-				+ " \"Verwendungszweck\": " + "\"" + verwendungszweck + "\","
-				+ "}}";
+				+ " \"Verwendungszweck\": " + "\"" + verwendungszweck + "\""
+				+ "}";
 	}
 	
 	/**
@@ -69,28 +69,44 @@ public class ViewImpl implements View {
 @GetMapping("/get.json")
 @ResponseBody
 public String getZahlungen() {
-	zahlungen.add(zahlung);  //für Bsp Daten eingefügt
+	zahlungen.add(zahlung);  //Bsp zahlungen in das Array hinzufügen
 	zahlungen.add(zahlung1);
 	zahlungen.add(zahlung2);
 	
+	//Deklaration Variable zur Erstellung des JSON Strings
 	String ergebnis = "{";
-	/**for (ZahlungImpl tempZahlung:zahlungen) {
-		
-		
-		das ist die verkürzte Form für den Iterator
-		
-	}*/
 	
+	//for (ZahlungImpl tempZahlung:zahlungen)>>das ist die verkürzte Form für den Iterator} 
+		
+	// Initalisierung der Iterator-SSt von Java mit dem Parameter,
+	// welche Objekte durchlaufen werden sollen (ZahlungenImpl-Objekte)
+	// und der Zuweisung des Arrays das durchlaufen werden soll.
+	
+	// welche Werte willst du durchlaufen mit dem Namen tempZahlungIterator
+	// dann dem Array Zahlungen zuweisen
+	// Iteratormethode aus der Zahlungenimpl aufrufen
 	Iterator<ZahlungImpl> tempZahlungIterator = zahlungen.iterator();
+	
+	//Zähler um die Ausgaben in den JSON zu nummerieren
 	int id = 1;
+	
+	//Lieber Iterator solange du noch ein Objekt im Array findest(hasnext noch true ist, bei false Abbruch)
+	//solange durchlaufe die Schleife
+	//Zwischenspeicherung einzelner Zahlung Objekte aus Iteration
 	while (tempZahlungIterator.hasNext()) {
+		
+		//next > holt das nächste Objekt raus
 		ZahlungImpl tempZahlung = tempZahlungIterator.next();
+		
+		//Entpacken der Objekte mit getMethoden
 		String empfaenger = tempZahlung.getEmpfaenger();
 		String iban = tempZahlung.getIban();
 		String bic = tempZahlung.getBic();
 		Double betrag = tempZahlung.getBetrag();
 		String waehrung = tempZahlung.getWaehrung();
 		String verwendungszweck = tempZahlung.getVerwendungszweck();
+		
+		//eigene Variable damit dem Ergebnis das Ergebnis angefügt werden kann
 		String tempIteration = 
 			"\""+ id +"\":{" 
 			+ " \"Empfaenger\": " + "\""+ empfaenger + "\"," 
@@ -100,13 +116,19 @@ public String getZahlungen() {
 			+ " \"Waehrung\": " + "\""+ waehrung + "\","
 			+ " \"Verwendungszweck\": " + "\"" + verwendungszweck + "\"" 
 			+ " }";
-		ergebnis = ergebnis + tempIteration;	
+		//Aufführen der ausgepackten Iterationsergebnisse an den JSON String
+		ergebnis = ergebnis + tempIteration;
+		
+		//Bedingung, damit nach dem letzten Eintrag kein Komma im JSON String gebaut wird
 		if (id <= zahlungen.size()-1) {
 			ergebnis = ergebnis + ",";
 		}
+		//Hochzählen des Zählers für die Durchnummerierung der Ergebnisse
 		id++;
 }
+	//Endklammer im JSON String nach Beendigung der Durchläufe anfügen
 	ergebnis = ergebnis + "}";
+	//Ergebnis zurückgeben
 	return ergebnis;
 }
 
@@ -119,10 +141,6 @@ public String getZahlungen() {
 
 		return css;
 	}
-
-	public String getJS() {
-	return "console.log ('Hi')";
-}
 */
 }
 

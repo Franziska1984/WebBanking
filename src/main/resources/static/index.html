@@ -28,7 +28,7 @@
  <input id="eingabefeld5" placeholder="Waehrung" type= "text"> <br>
  <input id="eingabefeld6" placeholder="Verwendungszweck" type= "text"> <br>
 
-</main>
+
 
 <p>Was möchest du als nächsten tun?</p>
 
@@ -37,5 +37,62 @@
 <option value= "p2">alle Überweisung anzeigen</option>
 </select> 
 
+<div>
+		<h2>Übersicht TestKontobewegungen</h2>
+		<button id="Button" type="button">OK</button>
+		<p>
+		<strong>Empfaenger:</strong>  <span id="empfaenger"></span>
+		<br>
+		<strong>IBAN:</strong>  <span id="iban"></span>
+		<br>
+		<strong>BIC:</strong> <span id="bic"></span>
+		<br>
+		<strong>Betrag:</strong>  <span id="betrag"></span>
+		<br>
+		<strong>Währung:</strong>  <span id="waehrung"></span>
+		<br>
+		<strong>Verwendungszweck:</strong> <span id="verwendungszweck"></span>
+		</p>
+		
+</div>
+
+<script>
+
+
+function empfaenger1(antwort) {
+	var json = antwort.json();
+	return json;
+}
+
+function empfaenger2(json) {
+	var empfaenger = json.Empfaenger;
+	var iban = json.Iban;
+	var bic = json.Bic;
+	var betrag = json.Betrag;
+	var waehrung = json.Waehrung;
+	var verwendungszweck = json.Verwendungszweck;
+
+	//Ausgabe Bankdaten
+	//document.getElementById("Output").innerHTML;
+	document.getElementById("empfaenger").innerHTML = empfaenger;
+	document.getElementById("iban").innerHTML = iban;
+	document.getElementById("bic").innerHTML = bic;
+	document.getElementById("betrag").innerHTML = betrag;
+	document.getElementById("waehrung").innerHTML = waehrung;
+	document.getElementById("verwendungszweck").innerHTML = verwendungszweck;
+}
+
+function Testdaten_abrufen () {
+		
+	fetch("test.json")
+	.then(empfaenger1)
+	.then(empfaenger2);
+	
+}
+
+document.getElementById("Button").addEventListener("click", Testdaten_abrufen);
+
+</script>
+</main>
 </body>
 </html>
