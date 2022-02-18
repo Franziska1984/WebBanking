@@ -1,4 +1,4 @@
-package de.telekom.sea7;
+package de.telekom.sea7.model.implementation;
 
 import org.springframework.stereotype.Service;
 

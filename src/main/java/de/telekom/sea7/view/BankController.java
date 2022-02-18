@@ -1,4 +1,4 @@
-package de.telekom.sea7;
+package de.telekom.sea7.view;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

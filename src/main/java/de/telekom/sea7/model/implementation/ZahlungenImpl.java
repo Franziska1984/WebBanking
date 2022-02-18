@@ -1,4 +1,4 @@
-package de.telekom.sea7;
+package de.telekom.sea7.model.implementation;
 
 import java.util.ArrayList;
 import java.util.Iterator;

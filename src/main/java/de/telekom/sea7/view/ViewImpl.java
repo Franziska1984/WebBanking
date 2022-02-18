@@ -1,13 +1,17 @@
-package de.telekom.sea7;
+package de.telekom.sea7.view;
 
 import java.time.LocalDateTime;
 import java.util.Iterator;
 
-import de.telekom.sea7.ZahlungImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import de.telekom.sea7.model.implementation.ZahlungImpl;
+import de.telekom.sea7.model.implementation.ZahlungenImpl;
+
+
 
 @Controller 
 public class ViewImpl implements View {
