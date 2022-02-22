@@ -8,8 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import de.telekom.sea7.model.implementation.ZahlungImpl;
-import de.telekom.sea7.model.implementation.ZahlungenImpl;
+import de.telekom.sea7.model.implementation.Zahlung;
+import de.telekom.sea7.model.implementation.Zahlungen;
 
 
 
@@ -17,13 +17,13 @@ import de.telekom.sea7.model.implementation.ZahlungenImpl;
 public class ViewImpl implements View {
 
 	@Autowired
-	ZahlungImpl zahlung;
+	Zahlung zahlung;
 	@Autowired
-	ZahlungImpl zahlung1;
+	Zahlung zahlung1;
 	@Autowired
-	ZahlungImpl zahlung2;
+	Zahlung zahlung2;
 	@Autowired
-	ZahlungenImpl zahlungen;
+	Zahlungen zahlungen;
 
 
 	@GetMapping("/test.html")
@@ -89,7 +89,7 @@ public String getZahlungen() {
 	// welche Werte willst du durchlaufen mit dem Namen tempZahlungIterator
 	// dann dem Array Zahlungen zuweisen
 	// Iteratormethode aus der Zahlungenimpl aufrufen
-	Iterator<ZahlungImpl> tempZahlungIterator = zahlungen.iterator();
+	Iterator<Zahlung> tempZahlungIterator = zahlungen.iterator();
 	
 	//Zähler um die Ausgaben in den JSON zu nummerieren
 	int id = 1;
@@ -100,7 +100,7 @@ public String getZahlungen() {
 	while (tempZahlungIterator.hasNext()) {
 		
 		//next > holt das nächste Objekt raus
-		ZahlungImpl tempZahlung = tempZahlungIterator.next();
+		Zahlung tempZahlung = tempZahlungIterator.next();
 		
 		//Entpacken der Objekte mit getMethoden
 		String empfaenger = tempZahlung.getEmpfaenger();

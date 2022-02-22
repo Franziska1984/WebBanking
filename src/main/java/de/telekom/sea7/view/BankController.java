@@ -1,12 +1,13 @@
 package de.telekom.sea7.view;
 
-import org.springframework.stereotype.Controller;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
+// @Controller + @ResponseBody = @RestController > wenn alle Methoden eine JSON zurückgeben
 public class BankController {
 
 	/**
@@ -19,7 +20,7 @@ public class BankController {
 	 */
 
 	@GetMapping("/{search}/{kundennummer}")
-	@ResponseBody	
+	//@ResponseBody	> kann über die Klasse geschrieben werden (BankController)
 	public String getKontostand(	
 		@PathVariable ("kundennummer") String kundennummer,
 		@RequestParam ("datum") String datum,

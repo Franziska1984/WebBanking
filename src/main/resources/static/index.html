@@ -7,23 +7,26 @@
     <meta charset="UTF-8">       
     <link href="index.css" rel="stylesheet">
     <script src="index.js" type="module"></script>
+ <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">  
     
 </head>
 
 <body>
 
 <h1> Web Banking </h1>
-<h2>Big Banking Projekt</h2><br>
+<h2>Franzis Banking Projekt</h2><br>
 
 <img src="banking.jpg">
 
-<p> Unter folgendem Link erhälst du die letzte Überweisung von Franzi:</p>
+<p> Hier kannst du dir die letzte Überweisung von Franzi oder Marco anschauen:</p>
 
- <a href="http://localhost:8080/franzi">Franzi</a><br>
- 
- <p> Unter folgendem Link erhälst du die letzte Überweisung von Marco:</p>
+ 	<form action="http://localhost:8080/franzi">
+         <button type="submit">Franzi</button>
+      </form>
 
- <a href="http://localhost:8080/marco">Marco</a><br>
+ 	<form action="http://localhost:8080/marco">
+         <button type="submit">Marco</button>
+      </form>
 
 <p> Hier kannst du eine neue Überweisung tätigen. Bitte gib die Daten ein.</p>
 
@@ -37,6 +40,21 @@
  <input id="eingabefeld6" placeholder="Verwendungszweck" type= "text"> <br>
 
 
+<p>hier kannst du bestimmte Daten sehen</p><br>
+<div id="EingabeFeld">
+        Anzahl von Testdaten <input id="input2" type="text"><br>
+    </div>
+
+    <div id="ausgabeSingleButton">
+        <button id="btn2" type="button">Daten generieren</button>
+    </div>
+<div id="EingabeFeld">
+        ID für Einzelausgabe <input id="input3" type="text"><br>
+    </div>
+
+    <div id="ausgabeSingleButton">
+        <button id="btn3" type="button">Abfrage starten</button>
+    </div>
 
 <p>Was möchest du als nächsten tun?</p>
 
@@ -64,6 +82,14 @@
 		
 </div>
 <script>
+document.getElementById("btn2").addEventListener("click", testDataStart);
+document.getElementById("btn3").addEventListener("click", auslesen);
+
+function testDataStart() {
+    var eingabeUser = document.getElementById("input2").value;
+    var url = "/testdaten/" + eingabeUser
+    window.location = url;
+}
 
 function empfaenger1(antwort) {
 	var json = antwort.json();
@@ -71,12 +97,12 @@ function empfaenger1(antwort) {
 }
 
 function empfaenger2(json) {
-	var empfaenger = json.Empfaenger;
-	var iban = json.Iban;
-	var bic = json.Bic;
-	var betrag = json.Betrag;
-	var waehrung = json.Waehrung;
-	var verwendungszweck = json.Verwendungszweck;
+	var empfaenger = json.empfaenger;
+	var iban = json.iban;
+	var bic = json.bic;
+	var betrag = json.betrag;
+	var waehrung = json.waehrung;
+	var verwendungszweck = json.verwendungszweck;
 
 	//Ausgabe Bankdaten
 	//document.getElementById("Output").innerHTML;
@@ -88,9 +114,10 @@ function empfaenger2(json) {
 	document.getElementById("verwendungszweck").innerHTML = verwendungszweck;
 }
 
-function Testdaten_abrufen () {
-		
-	fetch("test.json")
+function auslesen () {
+	var uebergebeneID = document.getElementById("input3").value;
+	var jsonURL = "/zahlung/"+uebergebeneID;
+	fetch(jsonURL)
 	.then(empfaenger1)
 	.then(empfaenger2);
 	

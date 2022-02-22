@@ -3,7 +3,7 @@ package de.telekom.sea7.model.implementation;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ZahlungImpl {
+public class Zahlung {
 
 	private String empfaenger;
 	private String iban;
@@ -12,7 +12,7 @@ public class ZahlungImpl {
 	private String waehrung;
 	private String verwendungszweck;
 	
-	public ZahlungImpl() {
+	public Zahlung() {
 
 		this.empfaenger = "Karl";
 		this.iban = "DE12345678";
