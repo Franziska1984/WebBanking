@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+
 <head>
 <meta charset="UTF-8">
 
@@ -7,28 +10,30 @@
     <meta charset="UTF-8">       
     <link href="index.css" rel="stylesheet">
     <script src="index.js" type="module"></script>
- <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">  
+ <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"> 
+
     
 </head>
 
 <body>
 
 <h1> Web Banking </h1>
-<h2>Franzis Banking Projekt</h2><br>
+<h2>Big Banking Projekt</h2><br>
 
 <img src="banking.jpg">
 
-<p> Hier kannst du dir die letzte Überweisung von Franzi oder Marco anschauen:</p>
+<h3> Hier kannst du dir die letzte Überweisung von Franzi oder Marco anzeigen lassen:</h3>
 
- 	<form action="http://localhost:8080/franzi">
+ 	<form action="http://localhost:8090/franzi">
          <button type="submit">Franzi</button>
       </form>
 
- 	<form action="http://localhost:8080/marco">
+ 	<form action="http://localhost:8090/marco">
          <button type="submit">Marco</button>
       </form>
+<p>-----------------------------------------------------------------------------------------------------------------</p>
 
-<p> Hier kannst du eine neue Überweisung tätigen. Bitte gib die Daten ein.</p>
+<h3> Hier kannst du eine neue Überweisung tätigen. Bitte gib die Daten ein.</h3>
 
 <main>
 
@@ -37,26 +42,45 @@
  <input id="eingabefeld3" placeholder="BIC" type= "text"> <br>
  <input id="eingabefeld4" placeholder="Betrag" type= "text"> <br>
  <input id="eingabefeld5" placeholder="Waehrung" type= "text"> <br>
- <input id="eingabefeld6" placeholder="Verwendungszweck" type= "text"> <br>
+ <input id="eingabefeld6" placeholder="Verwendungszweck" type= "text"> <br><br>
+
+ <div id="ausgabeSingleButton">
+        <button id="output" type="button">Daten senden</button><br><br>
+    </div>
+    
+<p>-----------------------------------------------------------------------------------------------------------------</p>
 
 
-<p>hier kannst du bestimmte Daten sehen</p><br>
-<div id="EingabeFeld">
+<h3>Hier kannst du mehrere Testüberweisungen anlegen und dir anzeigen lassen.</h3><br>
+	<div id="EingabeFeld">
         Anzahl von Testdaten <input id="input2" type="text"><br><br>
     </div>
 
     <div id="ausgabeSingleButton">
         <button id="btn2" type="button">Daten generieren</button><br><br>
     </div>
-<div id="EingabeFeld">
+    
+	<div id="EingabeFeld">
         ID für Einzelausgabe <input id="input3" type="text"><br><br>
     </div>
 
     <div id="ausgabeSingleButton">
         <button id="btn3" type="button">Abfrage starten</button><br><br>
     </div>
+    
+   
+    
+   <!--  
+    <p>In diesem Bereich können alle Überweisungen eingesehen und bearebitet werden. </p>
+
+
+    <div id="ausgabeSingleButton">
+        <button id="uebersicht" type="button">Übersicht Kontobewegungen</button><br><br>
+    </div>
+    -->
 <div>
-		<h2>Übersicht Kontobewegungen</h2>
+
+		<h3>Übersicht Kontobewegungen</h3>
 	
 		<p>
 		<strong>Empfaenger:</strong>  <span id="empfaenger"></span>
@@ -71,9 +95,21 @@
 		<br>
 		<strong>Verwendungszweck:</strong> <span id="verwendungszweck"></span>
 		</p>
+
+<p>-----------------------------------------------------------------------------------------------------------------</p>
+		
+ <h3>Hier kannst du dir alle Überweisungen anzeigen lassen:</h3>
+    
+    <form action="http://localhost:8090/zahlungen/">
+         <button type="submit">alle Überweisungen anzeigen</button>
+      </form>		
 		
 </div>
+<p>-----------------------------------------------------------------------------------------------------------------</p>
+<canvas id="myChart" style="width:100%;max-width:600px"></canvas>
+
 <script>
+
 document.getElementById("btn2").addEventListener("click", testDataStart);
 document.getElementById("btn3").addEventListener("click", auslesen);
 
@@ -111,11 +147,58 @@ function auslesen () {
 	var jsonURL = "/zahlung/"+uebergebeneID;
 	fetch(jsonURL)
 	.then(empfaenger1)
-	.then(empfaenger2);
-	
+	.then(empfaenger2);	
 }
 
-document.getElementById("Button").addEventListener("click", Testdaten_abrufen);
+//document.getElementById("Button").addEventListener("click", Testdaten_abrufen);
+
+document.getElementById("output").addEventListener("click", post);
+
+ //neuer Eintrag an REST API senden
+function post() {
+	//Eingabe auslesen
+    var input = {
+
+        empfaenger: document.getElementById("eingabefeld1").value,
+        iban: document.getElementById("eingabefeld2").value,
+        bic: document.getElementById("eingabefeld3").value,
+        betrag: document.getElementById("eingabefeld4").value,
+        waehrung: document.getElementById("eingabefeld5").value,
+        verwendungszweck: document.getElementById("eingabefeld6").value,
+    }
+ //String in JSON umwandeln
+    var json = JSON.stringify(input)
+    fetch("/zahlung/",
+        {	//Daten senden
+            headers: { "Content-Type": "application/json" },
+            method: "POST",
+            body: json
+        }
+	// Bestätigung ausgeben
+    ).then(alert("Ihre Überweisung wurde verbucht."))
+}
+
+var xValues = ["Franzi", "Marco", "Peggy", "Oli"];
+var yValues = [55, 49, 44, 24];
+var barColors = ["red", "green","blue","orange"];
+
+new Chart("myChart", {
+  type: "bar",
+  data: {
+    labels: xValues,
+    datasets: [{
+      backgroundColor: barColors,
+      data: yValues
+    }]
+  },
+  options: {
+    legend: {display: false},
+    title: {
+      display: true,
+      text: "Überweisungen in einem Diagramm"
+    }
+  }
+});
 
 </script>
 </main>

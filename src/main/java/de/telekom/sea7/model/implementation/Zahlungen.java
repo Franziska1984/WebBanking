@@ -50,8 +50,12 @@ public class Zahlungen implements Iterable <Zahlung>{
 	throw new Exception();
 	}
 	
-}
+	}
 	public int getId(Zahlung zahlung) {
 		return paymentsList.lastIndexOf(zahlung);
 	}
+	public Zahlung delete(int position) {
+        return paymentsList.remove(position);
+    }
+	
 }
