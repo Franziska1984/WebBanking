@@ -4,8 +4,8 @@ import org.springframework.stereotype.Controller;
 
 @Controller
 public interface View {
-	 String getHtml();
-	 String getJSON();
-	 String getZahlungen();
+	// String getHtml();
+	// String getJSON();
+	 //String getZahlungen();
 	
 }

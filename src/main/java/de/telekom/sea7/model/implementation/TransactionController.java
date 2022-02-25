@@ -10,14 +10,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController //ersetzt Controller und ResponseBody
+import de.telekom.sea7.interfaces.Zahlung;
+import de.telekom.sea7.interfaces.Zahlungen;
+
+@RestController 
 public class TransactionController {
 	
-	//Array für Testdaten erzeugen
+	/**Array für Testdaten erzeugen, hier ist das Array noch leer*/
 	@Autowired
-	Zahlungen paymentsList; //ArrayList hier noch leer
+	Zahlungen paymentsList; 
 
-	//Methode um Testdaten ins Array zu schreiben
+	/**Methode um Testdaten ins Array zu schreiben*/
 	@GetMapping ("/testdaten/{anzahl}")
 	@ResponseBody
 	public String createTestdata(@PathVariable(name="anzahl") int anzahl) {
@@ -34,13 +37,13 @@ public class TransactionController {
 		return paymentsList;
 	}
 	
-	//Methode zum Abholen einer Zahlung mit einer ID
+	/**Methode zum Abholen einer Zahlung mit einer ID*/
     @GetMapping ("/zahlung/{id}")
     public Zahlung getZahlungen(@PathVariable(name="id")int id) throws Exception{
         return paymentsList.get(id);
     }
 
-    //Methode zum löschen einer Zahlung > muss noch in der HTML.index mit aufgenommen werden
+    /**Methode zum löschen einer Zahlung > muss noch in der HTML.index mit aufgenommen werden*/
     @DeleteMapping("/zahlung/{id}")
             public Zahlung deleteZahlung(@PathVariable(name="id") int id){
                 return paymentsList.delete(id);
@@ -50,18 +53,19 @@ public class TransactionController {
     //URL: http://localhost:8090/zahlung/5
     @PutMapping("/zahlung/{id}")
     public Zahlung updateZahlung(
-                @RequestBody Zahlung zahlung,
+                @RequestBody ZahlungImpl zahlung,
                 @PathVariable ("id")int id) {
         paymentsList.delete(id);
         paymentsList.add(zahlung);
         return null; 
     }
 
-    //Metode um eine bestehende Zahlung hinzuzufügen > muss noch in der HTML.index mit aufgenommen werden
-    // URL: http://localhost:8090/zahlungen/ >>alle Zahlungen abrufen
+    /**Metode um eine neu Zahlung hinzuzufügen 
+    *URL: http://localhost:8090/zahlungen/ >>alle Zahlungen abrufen
+    */
     @PostMapping("/zahlung/")
     public String addZahlung(
-                @RequestBody Zahlung zahlung) {
+                @RequestBody ZahlungImpl zahlung) {
         paymentsList.add(zahlung);
         return "Danke"; 
     }

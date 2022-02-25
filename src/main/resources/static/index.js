@@ -1,11 +1,20 @@
 
-document.getElementById("btn2").addEventListener("click", testDataStart);
-document.getElementById("btn3").addEventListener("click", auslesen);
+document.getElementById("btn1").addEventListener("click", testDataStart);
+document.getElementById("btn2").addEventListener("click", auslesen);
+document.getElementById("btn3").addEventListener("click", loeschen);
+document.getElementById("btn4").addEventListener("click", post);
 
 function testDataStart() {
-    var eingabeUser = document.getElementById("input2").value;
+    var eingabeUser = document.getElementById("input1").value;
     var url = "/testdaten/" + eingabeUser
     window.location = url;
+}
+function auslesen () {
+	var uebergebeneID = document.getElementById("input2").value;
+	var jsonURL = "/zahlung/"+uebergebeneID;
+	fetch(jsonURL)
+	.then(empfaenger1)
+	.then(empfaenger2);	
 }
 
 function empfaenger1(antwort) {
@@ -22,7 +31,6 @@ function empfaenger2(json) {
 	var verwendungszweck = json.verwendungszweck;
 
 	//Ausgabe Bankdaten
-	//document.getElementById("Output").innerHTML;
 	document.getElementById("empfaenger").innerHTML = empfaenger;
 	document.getElementById("iban").innerHTML = iban;
 	document.getElementById("bic").innerHTML = bic;
@@ -31,19 +39,20 @@ function empfaenger2(json) {
 	document.getElementById("verwendungszweck").innerHTML = verwendungszweck;
 }
 
-function auslesen () {
+function loeschen () {
 	var uebergebeneID = document.getElementById("input3").value;
-	var jsonURL = "/zahlung/"+uebergebeneID;
-	fetch(jsonURL)
-	.then(empfaenger1)
-	.then(empfaenger2);	
+	var json = "/zahlung/"+uebergebeneID;
+    fetch(json,
+        {	
+            headers: { "Content-Type": "application/json" },
+            method: "DELETE",
+            body: json
+        }
+    ).then(alert("Ihre Überweisung wurde gelöscht."))
 }
 
-document.getElementById("Button").addEventListener("click", Testdaten_abrufen);
- //neuer Eintrag an REST API senden
-function post() {
-	//Eingabe auslesen
-    var input = {
+function post() {		//neuer Eintrag an REST API senden
+	var input = {		//Eingabe auslesen
 
         empfaenger: document.getElementById("eingabefeld1").value,
         iban: document.getElementById("eingabefeld2").value,
@@ -52,15 +61,34 @@ function post() {
         waehrung: document.getElementById("eingabefeld5").value,
         verwendungszweck: document.getElementById("eingabefeld6").value,
     }
- //String in JSON umwandeln
-    var json = JSON.stringify(input)
+    var json = JSON.stringify(input)   //String in JSON umwandeln
     fetch("/zahlung/",
         {	//Daten senden
             headers: { "Content-Type": "application/json" },
             method: "POST",
             body: json
         }
-	// Bestätigung ausgeben
-    ).then(alert("Ihre Überweisung wurde verbucht."))
+    ).then(alert("Ihre Überweisung wurde verbucht.")) // Bestätigung ausgeben
 }
 
+var xValues = ["Franzi", "Marco", "Peggy", "Oli"];
+var yValues = [55, 49, 44, 24];
+var barColors = ["red", "green","blue","orange"];
+
+new Chart("myChart", {
+  type: "bar",
+  data: {
+    labels: xValues,
+    datasets: [{
+      backgroundColor: barColors,
+      data: yValues
+    }]
+  },
+  options: {
+    legend: {display: false},
+    title: {
+      display: true,
+      text: "Überweisungen in einem Diagramm"
+    }
+  }
+});

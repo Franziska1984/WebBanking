@@ -8,10 +8,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import de.telekom.sea7.model.implementation.Zahlung;
-import de.telekom.sea7.model.implementation.Zahlungen;
+import de.telekom.sea7.model.implementation.ZahlungImpl;
+import de.telekom.sea7.model.implementation.ZahlungenImpl;
 
-
+/**
 
 @Controller 
 public class ViewImpl implements View {
@@ -25,7 +25,7 @@ public class ViewImpl implements View {
 	@Autowired
 	Zahlungen zahlungen;
 
-
+	//wird nicht genutzt
 	@GetMapping("/test.html")
 	@ResponseBody
 	public String getHtml() {
@@ -45,6 +45,7 @@ public class ViewImpl implements View {
 		return html;
 	}
 
+	//wird nicht genutzt
 	@GetMapping("test.json")
 	@ResponseBody
 	public String getJSON() {
@@ -64,12 +65,13 @@ public class ViewImpl implements View {
 				+ "}";
 	}
 	
-	/**
+	
 	 *Beispiele einfügen
 	 * ArrayList auslesen, für jedes Zahlungsobjekt in json Format eine Ausgabe machen
 	 * 
 	 */
 	
+	/**
 @GetMapping("/get.json")
 @ResponseBody
 public String getZahlungen() {
@@ -136,15 +138,5 @@ public String getZahlungen() {
 	return ergebnis;
 }
 
-
-
-	/**@GetMapping("/test.css")
-	@ResponseBody
-	public String getCSS() {
-		String css = "<@charset 'UTF-8'>";
-
-		return css;
-	}
-*/
 }
-
+*/

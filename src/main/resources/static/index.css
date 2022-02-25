@@ -5,3 +5,12 @@ head,body,main,div,canvas {
     text-align: center;
     margin-left: auto; margin-right: auto;
 }
+header {
+	width:850px;
+	height: 230px;
+	border: 1px solid grey;
+    background-color: white;
+    color: teal;  
+    text-align: center;
+    margin-left: auto; margin-right: auto;
+}

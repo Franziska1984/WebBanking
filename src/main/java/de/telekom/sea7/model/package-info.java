@@ -1,8 +1,9 @@
 package de.telekom.sea7.model;
 
 
-/** das ist das Package mit dem Datenmodel
+/**
  * 
- * 
- * Hier können Beschreibungen reingeschrieben werden wie Inhaltsverzeichnis
+ * ViewImpl und View werden nicht mehr benötigt, da dafür neue Methoden in der 
+ * TransactionController geschrieben wurden
+ *
  */

@@ -10,9 +10,8 @@
     <meta charset="UTF-8">       
     <link href="index.css" rel="stylesheet">
     <script src="index.js" type="module"></script>
- <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"> 
-
-    
+ 	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"> 
+   
 </head>
 
 <body>
@@ -22,20 +21,16 @@
 
 <img src="banking.jpg">
 
-<h3> Hier kannst du dir die letzte Überweisung von Franzi oder Marco anzeigen lassen:</h3>
-
- 	<form action="http://localhost:8090/franzi">
-         <button type="submit">Franzi</button>
-      </form>
-
- 	<form action="http://localhost:8090/marco">
-         <button type="submit">Marco</button>
-      </form>
-<p>-----------------------------------------------------------------------------------------------------------------</p>
-
-<h3> Hier kannst du eine neue Überweisung tätigen. Bitte gib die Daten ein.</h3>
-
 <main>
+<h3> Hier kannst du dir eine Überweisungsvorlage anzeigen lassen:</h3>
+
+ 	<form action="http://localhost:8090/vorlage">
+         <button type="submit">Vorlage</button>
+    </form><br>
+	
+
+<header>
+<h3> Hier kannst du eine neue Überweisung tätigen. Bitte gib die Daten ein.</h3>
 
  <input id="eingabefeld1" placeholder="Empfaenger" type= "text"> <br>
  <input id="eingabefeld2" placeholder="Iban" type= "text"> <br>
@@ -44,40 +39,25 @@
  <input id="eingabefeld5" placeholder="Waehrung" type= "text"> <br>
  <input id="eingabefeld6" placeholder="Verwendungszweck" type= "text"> <br><br>
 
- <div id="ausgabeSingleButton">
-        <button id="output" type="button">Daten senden</button><br><br>
-    </div>
-    
-<p>-----------------------------------------------------------------------------------------------------------------</p>
+ <button id="btn4" type="button">Daten senden</button><br><br>
+</header>   
 
 
 <h3>Hier kannst du mehrere Testüberweisungen anlegen und dir anzeigen lassen.</h3><br>
-	<div id="EingabeFeld">
-        Anzahl von Testdaten <input id="input2" type="text"><br><br>
-    </div>
+	<div>
+        Anzahl von Testdaten <input id="input1" type="text"><br><br>
+ 
+        <button id="btn1" type="button">Daten generieren</button><br><br>
 
-    <div id="ausgabeSingleButton">
-        <button id="btn2" type="button">Daten generieren</button><br><br>
-    </div>
+        ID für Einzelausgabe <input id="input2" type="text"><br><br>
     
-	<div id="EingabeFeld">
-        ID für Einzelausgabe <input id="input3" type="text"><br><br>
-    </div>
-
-    <div id="ausgabeSingleButton">
-        <button id="btn3" type="button">Abfrage starten</button><br><br>
-    </div>
-    
+        <button id="btn2" type="button">Abfrage starten</button><br><br>
    
+        ID zum löschen <input id="input3" type="text"><br><br>
+
+        <button id="btn3" type="button">ID löschen</button><br><br>
+   </div>
     
-   <!--  
-    <p>In diesem Bereich können alle Überweisungen eingesehen und bearebitet werden. </p>
-
-
-    <div id="ausgabeSingleButton">
-        <button id="uebersicht" type="button">Übersicht Kontobewegungen</button><br><br>
-    </div>
-    -->
 <div>
 
 		<h3>Übersicht Kontobewegungen</h3>
@@ -110,13 +90,22 @@
 
 <script>
 
-document.getElementById("btn2").addEventListener("click", testDataStart);
-document.getElementById("btn3").addEventListener("click", auslesen);
+document.getElementById("btn1").addEventListener("click", testDataStart);
+document.getElementById("btn2").addEventListener("click", auslesen);
+document.getElementById("btn3").addEventListener("click", loeschen);
+document.getElementById("btn4").addEventListener("click", post);
 
 function testDataStart() {
-    var eingabeUser = document.getElementById("input2").value;
+    var eingabeUser = document.getElementById("input1").value;
     var url = "/testdaten/" + eingabeUser
     window.location = url;
+}
+function auslesen () {
+	var uebergebeneID = document.getElementById("input2").value;
+	var jsonURL = "/zahlung/"+uebergebeneID;
+	fetch(jsonURL)
+	.then(empfaenger1)
+	.then(empfaenger2);	
 }
 
 function empfaenger1(antwort) {
@@ -133,7 +122,6 @@ function empfaenger2(json) {
 	var verwendungszweck = json.verwendungszweck;
 
 	//Ausgabe Bankdaten
-	//document.getElementById("Output").innerHTML;
 	document.getElementById("empfaenger").innerHTML = empfaenger;
 	document.getElementById("iban").innerHTML = iban;
 	document.getElementById("bic").innerHTML = bic;
@@ -142,22 +130,20 @@ function empfaenger2(json) {
 	document.getElementById("verwendungszweck").innerHTML = verwendungszweck;
 }
 
-function auslesen () {
+function loeschen () {
 	var uebergebeneID = document.getElementById("input3").value;
-	var jsonURL = "/zahlung/"+uebergebeneID;
-	fetch(jsonURL)
-	.then(empfaenger1)
-	.then(empfaenger2);	
+	var json = "/zahlung/"+uebergebeneID;
+    fetch(json,
+        {	
+            headers: { "Content-Type": "application/json" },
+            method: "DELETE",
+            body: json
+        }
+    ).then(alert("Ihre Überweisung wurde gelöscht."))
 }
 
-//document.getElementById("Button").addEventListener("click", Testdaten_abrufen);
-
-document.getElementById("output").addEventListener("click", post);
-
- //neuer Eintrag an REST API senden
-function post() {
-	//Eingabe auslesen
-    var input = {
+function post() {		//neuer Eintrag an REST API senden
+	var input = {		//Eingabe auslesen
 
         empfaenger: document.getElementById("eingabefeld1").value,
         iban: document.getElementById("eingabefeld2").value,
@@ -166,16 +152,14 @@ function post() {
         waehrung: document.getElementById("eingabefeld5").value,
         verwendungszweck: document.getElementById("eingabefeld6").value,
     }
- //String in JSON umwandeln
-    var json = JSON.stringify(input)
+    var json = JSON.stringify(input)   //String in JSON umwandeln
     fetch("/zahlung/",
         {	//Daten senden
             headers: { "Content-Type": "application/json" },
             method: "POST",
             body: json
         }
-	// Bestätigung ausgeben
-    ).then(alert("Ihre Überweisung wurde verbucht."))
+    ).then(alert("Ihre Überweisung wurde verbucht.")) // Bestätigung ausgeben
 }
 
 var xValues = ["Franzi", "Marco", "Peggy", "Oli"];
