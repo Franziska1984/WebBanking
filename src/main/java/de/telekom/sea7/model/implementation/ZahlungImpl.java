@@ -11,7 +11,6 @@ import de.telekom.sea7.interfaces.Zahlung;
 
 @Entity  //gibt an, dass das Objekt von Spring Data verwaltet wird 
          //und dass seine Attribute in Spalten von DB-Tabellen konvertiert werden
-@Service
 public class ZahlungImpl implements Zahlung{
 
 	@Id   //gibt an, dass das Attribut als Primärschlüssel in der Tabelle
@@ -19,6 +18,7 @@ public class ZahlungImpl implements Zahlung{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	 //was angibt, dass der Wert der ID beim Einfügen 
 	 //in die Datenbank automatisch und inkrementell generiert wird.
+	private Integer id;
 	private String empfaenger;
 	private String iban;
 	private String bic;

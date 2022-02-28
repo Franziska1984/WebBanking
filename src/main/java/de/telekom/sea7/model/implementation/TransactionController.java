@@ -12,9 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import de.telekom.sea7.interfaces.Zahlung;
 import de.telekom.sea7.interfaces.Zahlungen;
+import de.telekom.sea7.repository.ZahlungenRepository;
 
 @RestController 
 public class TransactionController {
+	
+	 @Autowired
+	 private ZahlungenRepository repository;
 	
 	/**Array für Testdaten erzeugen, hier ist das Array noch leer*/
 	@Autowired
