@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 
 <head>
@@ -43,12 +43,8 @@
 </header>   
 
 
-<h3>Hier kannst du mehrere Testüberweisungen anlegen und dir anzeigen lassen.</h3><br>
+<h3>Hier kannst du dir einzelne Überweisungen anzeigen lassen und löschen.</h3><br>
 	<div>
-        Anzahl von Testdaten <input id="input1" type="text"><br><br>
- 
-        <button id="btn1" type="button">Daten generieren</button><br><br>
-
         ID für Einzelausgabe <input id="input2" type="text"><br><br>
     
         <button id="btn2" type="button">Abfrage starten</button><br><br>
@@ -63,46 +59,46 @@
 		<h3>Übersicht Kontobewegungen</h3>
 	
 		<p>
-		<strong>Empfaenger:</strong>  <span id="empfaenger"></span>
-		<br>
-		<strong>IBAN:</strong>  <span id="iban"></span>
-		<br>
-		<strong>BIC:</strong> <span id="bic"></span>
-		<br>
-		<strong>Betrag:</strong>  <span id="betrag"></span>
-		<br>
-		<strong>Währung:</strong>  <span id="waehrung"></span>
-		<br>
-		<strong>Verwendungszweck:</strong> <span id="verwendungszweck"></span>
+		Empfaenger:       <span id="empfaenger"></span><br>
+		IBAN:		      <span id="iban"></span><br>
+		BIC:		      <span id="bic"></span><br>
+		Betrag:		      <span id="betrag"></span><br>
+		Währung:     	  <span id="waehrung"></span><br>
+		Verwendungszweck: <span id="verwendungszweck"></span>
 		</p>
 
 <p>-----------------------------------------------------------------------------------------------------------------</p>
 		
- <h3>Hier kannst du dir alle Überweisungen anzeigen lassen:</h3>
+ <strong>Hier kannst du dir alle Überweisungen anzeigen lassen:</strong><br><br>
     
-    <form action="http://localhost:8090/zahlungen/">
+    <form action="http://localhost:8090/allpayments/">
          <button type="submit">alle Überweisungen anzeigen</button>
-      </form>		
-		
+    </form><br>	
+    
 </div>
+
+ <strong>Hier kannst du dir den Kontostand anzeigen lassen:<br><br>
+ <span id="info"> <button id="btnK" type="button">Kontostand</button></span> Euro.</strong>
+		
+		
 <p>-----------------------------------------------------------------------------------------------------------------</p>
+
+<button id="btn5" type="button">Diagramm ausführen</button><br><br>
+   </div>
 <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
 
 <script>
 
-document.getElementById("btn1").addEventListener("click", testDataStart);
+
 document.getElementById("btn2").addEventListener("click", auslesen);
 document.getElementById("btn3").addEventListener("click", loeschen);
 document.getElementById("btn4").addEventListener("click", post);
+document.getElementById("btnK").addEventListener("click", kontostand);
+document.getElementById("btn5").addEventListener("click", diagramm);
 
-function testDataStart() {
-    var eingabeUser = document.getElementById("input1").value;
-    var url = "/testdaten/" + eingabeUser
-    window.location = url;
-}
 function auslesen () {
 	var uebergebeneID = document.getElementById("input2").value;
-	var jsonURL = "/zahlung/"+uebergebeneID;
+	var jsonURL = "/onepayment/"+uebergebeneID;
 	fetch(jsonURL)
 	.then(empfaenger1)
 	.then(empfaenger2);	
@@ -112,6 +108,7 @@ function empfaenger1(antwort) {
 	var json = antwort.json();
 	return json;
 }
+
 
 function empfaenger2(json) {
 	var empfaenger = json.empfaenger;
@@ -132,7 +129,7 @@ function empfaenger2(json) {
 
 function loeschen () {
 	var uebergebeneID = document.getElementById("input3").value;
-	var json = "/zahlung/"+uebergebeneID;
+	var json = "/deletePayment/"+uebergebeneID;
     fetch(json,
         {	
             headers: { "Content-Type": "application/json" },
@@ -153,37 +150,66 @@ function post() {		//neuer Eintrag an REST API senden
         verwendungszweck: document.getElementById("eingabefeld6").value,
     }
     var json = JSON.stringify(input)   //String in JSON umwandeln
-    fetch("/zahlung/",
+    fetch("/postpayment/",
         {	//Daten senden
             headers: { "Content-Type": "application/json" },
             method: "POST",
             body: json
         }
     ).then(alert("Ihre Überweisung wurde verbucht.")) // Bestätigung ausgeben
+    document.getElementById("eingabefeld1").value = "";
+	document.getElementById("eingabefeld2").value = "";
+	document.getElementById("eingabefeld3").value = "";
+	document.getElementById("eingabefeld4").value = "";
+	document.getElementById("eingabefeld5").value = "";
+	document.getElementById("eingabefeld6").value = "";
 }
 
-var xValues = ["Franzi", "Marco", "Peggy", "Oli"];
-var yValues = [55, 49, 44, 24];
-var barColors = ["red", "green","blue","orange"];
+function kontostand() {
+    var jsonURL = "/sumpayments";
+	// Verarbeitung
+    fetch(jsonURL)
+    .then(empfaenger1)                 	// Aufruf der Methode empfaenger1
+    .then(empfaengerKonto2);                // Aufruf der Methode empfaenger2
+}
 
-new Chart("myChart", {
-  type: "bar",
-  data: {
-    labels: xValues,
-    datasets: [{
-      backgroundColor: barColors,
-      data: yValues
+function empfaengerKonto2(json) {
+	document.getElementById("info").innerHTML = json
+};
+
+function diagramm(){
+	fetch("/sumdiagramm/")
+	.then(empfaenger1)
+	.then(empfaenger3);
+}	
+
+
+function empfaenger3(json){
+	graphik(json);
+}
+
+function graphik(yValues){
+	var xValues = ["Franzi", "Marco", "Peggy", "Oli"];
+	var barColors = ["lightcoral", "lightblue","peachpuff","mediumaquamarine"];
+
+	new Chart("myChart", {
+  		type: "bar",
+  		data: {
+  		labels: xValues,
+   		datasets: [{
+    	backgroundColor: barColors,
+     	data: yValues
     }]
   },
-  options: {
-    legend: {display: false},
-    title: {
-      display: true,
-      text: "Überweisungen in einem Diagramm"
+  		options: {
+   		legend: {display: false},
+   		title: {
+    	display: true,
+     	text: "Überweisungen in einem Diagramm"
     }
   }
 });
-
+}
 </script>
 </main>
 </body>

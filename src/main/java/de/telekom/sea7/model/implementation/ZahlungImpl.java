@@ -1,11 +1,10 @@
 package de.telekom.sea7.model.implementation;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
-import org.springframework.stereotype.Service;
 
 import de.telekom.sea7.interfaces.Zahlung;
 
@@ -18,16 +17,30 @@ public class ZahlungImpl implements Zahlung{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	 //was angibt, dass der Wert der ID beim Einfügen 
 	 //in die Datenbank automatisch und inkrementell generiert wird.
+	
+	@Column (name = "id")
 	private Integer id;
+	@Column (name = "empfaenger")
 	private String empfaenger;
+	@Column (name = "iban")
 	private String iban;
+	@Column (name = "bic")
 	private String bic;
+	@Column (name = "betrag")
 	private double betrag;
+	@Column (name = "waehrung")
 	private String waehrung;
+	@Column (name = "verwendungszweck")
 	private String verwendungszweck;
+	
+	
 	
 	public String getEmpfaenger() {
 		return empfaenger;
+	}
+
+	public ZahlungImpl() {
+		super();
 	}
 
 	public void setEmpfaenger(String empfaenger) {
