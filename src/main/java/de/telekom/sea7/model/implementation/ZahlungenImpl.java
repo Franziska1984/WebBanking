@@ -20,7 +20,7 @@ public class ZahlungenImpl implements Iterable<Zahlung>,Zahlungen  {
 		for (int i = 0; i < anzahl; i++) { 
 			Zahlung testdaten = new ZahlungImpl();
 			testdaten.setEmpfaenger("Tester " + tester);
-			testdaten.setIban("DE" + 1234546 + tester);
+		//	testdaten.setIban("DE" + 1234546 + tester);
 			testdaten.setBic("XXWWFHF");
 			testdaten.setBetrag(tester + tester + tester + 0.7);
 			testdaten.setWaehrung("Euro");

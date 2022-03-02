@@ -1,10 +1,14 @@
 package de.telekom.sea7.model.implementation;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import de.telekom.sea7.interfaces.Zahlung;
 
@@ -22,8 +26,13 @@ public class ZahlungImpl implements Zahlung{
 	private Integer id;
 	@Column (name = "empfaenger")
 	private String empfaenger;
-	@Column (name = "iban")
-	private String iban;
+	
+	@ManyToOne (
+				//fetch = FetchType.LAZY, 
+				cascade=CascadeType.ALL)
+	@JoinColumn (name = "ibanimpl_id_iban")
+	private IbanImpl iban;
+	
 	@Column (name = "bic")
 	private String bic;
 	@Column (name = "betrag")
@@ -47,11 +56,20 @@ public class ZahlungImpl implements Zahlung{
 		this.empfaenger = empfaenger;
 	}
 
-	public String getIban() {
+	
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public IbanImpl getIban() {
 		return iban;
 	}
 
-	public void setIban(String iban) {
+	public void setIban(IbanImpl iban) {
 		this.iban = iban;
 	}
 

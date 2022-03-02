@@ -112,12 +112,11 @@ function empfaenger1(antwort) {
 
 function empfaenger2(json) {
 	var empfaenger = json.empfaenger;
-	var iban = json.iban;
+	var iban = json.iban.iban;
 	var bic = json.bic;
 	var betrag = json.betrag;
 	var waehrung = json.waehrung;
 	var verwendungszweck = json.verwendungszweck;
-
 	//Ausgabe Bankdaten
 	document.getElementById("empfaenger").innerHTML = empfaenger;
 	document.getElementById("iban").innerHTML = iban;
