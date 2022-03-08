@@ -12,24 +12,23 @@ import javax.persistence.ManyToOne;
 
 import de.telekom.sea7.interfaces.Zahlung;
 
-@Entity  //gibt an, dass das Objekt von Spring Data verwaltet wird 
-         //und dass seine Attribute in Spalten von DB-Tabellen konvertiert werden
+@Entity  //gibt an, dass die Attribute der Klasse in Spalten von DB-Tabellen konvertiert werden
+		 // z.B. für Empfänger wird die Spalte empfaenger angelegt
+
 public class ZahlungImpl implements Zahlung{
 
-	@Id   //gibt an, dass das Attribut als Primärschlüssel in der Tabelle
-	      //verwendet werden soll, die der Entität entspricht.
+	@Id   //gibt an, dass das Attribut ID als Primärschlüssel in der Tabelle verwendet werden soll
+	
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	 //was angibt, dass der Wert der ID beim Einfügen 
-	 //in die Datenbank automatisch und inkrementell generiert wird.
+	 //gibt an, dass der Wert der ID beim Einfügen 
+	 //in die Datenbank automatisch und aufeinander aufbauend generiert wird.
 	
 	@Column (name = "id")
 	private Integer id;
 	@Column (name = "empfaenger")
 	private String empfaenger;
 	
-	@ManyToOne (
-				//fetch = FetchType.LAZY, 
-				cascade=CascadeType.ALL)
+	@ManyToOne (cascade=CascadeType.ALL)
 	@JoinColumn (name = "ibanimpl_id_iban")
 	private IbanImpl iban;
 	
@@ -41,9 +40,7 @@ public class ZahlungImpl implements Zahlung{
 	private String waehrung;
 	@Column (name = "verwendungszweck")
 	private String verwendungszweck;
-	
-	
-	
+
 	public String getEmpfaenger() {
 		return empfaenger;
 	}
@@ -56,7 +53,6 @@ public class ZahlungImpl implements Zahlung{
 		this.empfaenger = empfaenger;
 	}
 
-	
 	public Integer getId() {
 		return id;
 	}

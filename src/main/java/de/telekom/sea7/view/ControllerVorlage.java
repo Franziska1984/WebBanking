@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class ControllerVorlage {
 	
-	
 	@GetMapping("/vorlage")
 	public String vorlage(Model model) {
 
@@ -27,7 +26,5 @@ public class ControllerVorlage {
 		model.addAttribute("name6", name6);
 		
 		return "vorlage";
-
 	}
-
 }

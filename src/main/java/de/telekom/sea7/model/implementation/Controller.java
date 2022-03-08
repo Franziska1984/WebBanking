@@ -1,6 +1,5 @@
 package de.telekom.sea7.model.implementation;
 
-import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import de.telekom.sea7.interfaces.Zahlung;
 import de.telekom.sea7.repository.IbanRepository;
 import de.telekom.sea7.repository.ZahlungenRepository;
 
@@ -28,15 +26,15 @@ public class Controller {
 	@Autowired
 	IbanRepository ibanRepo;
 	
-	//alle Zahlungen
+	//Methode zum Aufruf aller Zahlungen
 		@GetMapping("/allpayments")
 		@ResponseBody
 		  public List<ZahlungImpl> getPayments() {
 	        List<ZahlungImpl> zahlung = payments.findAll();
 	        return zahlung;
-	        }
+	      }
 		
-		//eine Zahlung
+		//Methode zum Aufruf einer Zahlung
 	    @GetMapping("/onepayment/{id}")
 	    @ResponseBody
 		public Optional<ZahlungImpl> getOnePayment(@PathVariable(name = "id") int id) {
@@ -44,37 +42,36 @@ public class Controller {
 			if (zahlung.isPresent()) {
 				return zahlung;
 			} else {
-				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Die angefragte ID gibt es nicht!");
-			}
-			
+				throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+						  "Die angefragte ID gibt es nicht!");
+			}	
 		}
 		
-	    //löschen einer Zahlung	    
+	    //Methode zum Löschen einer Zahlung	    
 	    @DeleteMapping("/deletePayment/{id}")
 		public void deleteOnePayment(@PathVariable("id") int id) {
-			 payments.deleteById(id);
-			 
+			 payments.deleteById(id);	 
 		}
 		
-	    //neue Zahlung
+	    //Methode zum Anlegen einer neuen Zahlung
 	    @PostMapping("/postpayment/")
 		public void addOnePayment(@RequestBody ZahlungImpl zahlung) {
 			payments.save(zahlung);
 		}
 	   
-	    //Summe aller Beträge
+	    //Methode zum Summieren aller Beträge
 	    @GetMapping("/sumpayments")
 		@ResponseBody
 		public Double umsatz() {
-	    //	DecimalFormat d = new DecimalFormat("#.##");   d.format
-			return payments.umsatz();
-			
+			return payments.umsatz();	
 		}
 	    
-	    //Berechnung für das Diagramm
+	    //Methode zur Berechnung für das Diagramm
 	    @GetMapping("/sumdiagramm")
 		@ResponseBody
-		public Double[] diagramm() {
-			return payments.diagramm();
-		}  
+		public Object diagramm() {
+	    	return payments.diagramm();
+	    }
+			
+		
 }

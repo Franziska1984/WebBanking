@@ -9,18 +9,16 @@ import javax.persistence.Id;
 @Entity
 public class IbanImpl {
 
-
 	@Id
-	@GeneratedValue(strategy= GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id_iban;
-	
-	
-	@Column (name = "iban")
+
+	@Column(name = "iban")
 	private String iban;
-	
+
 	public IbanImpl() {
 	}
-	
+
 	public IbanImpl(String iban) {
 		this.iban = iban;
 	}
@@ -40,5 +38,5 @@ public class IbanImpl {
 	public void setIban(String iban) {
 		this.iban = iban;
 	}
-	
+
 }

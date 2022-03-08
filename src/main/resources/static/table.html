@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Table</title>
+<link href="table.css" rel="stylesheet">
+</head>
+<body>
+
+	<form action="http://localhost:8090/index.html">
+		<button class="btn" type="submit">zur Startseite</button>
+    </form><br>
+
+	<div id=output></div>
+
+<script>
+
+  //Bei Start der Seite soll immer die Tabelle geladen werden
+  tabelleAusJson();
+
+  // GLOBALE VARIABLE FÜR DIE DYNAMISCHE TABELLE
+  var table = document.createElement("table");
+
+  // FUNKTIONSAUFRUF zum senden eines DELETE an WEBSERVER und entfernen
+  // der Zeile aus der Tabelle - wird von tabelleAusJSON() aufgerufen
+  function loescheZelle(i) {
+      fetch("/deletePayment/" + i,
+      {
+      headers: {"Content-Type":"application/json"},
+      method: "DELETE",
+      body: ""
+      }
+      ).then(alert("Die Überweisung wurde gelöscht!"))
+      //Seite und Tabelle aufgrund Autostart nach Löschvorgang neu laden
+      location.reload();
+  }
+
+  // FUNKTIONSAUFRUF zum abholen der json Daten über REST API und Erzeugung einer Tabelle
+  // Schritt 1: Vorbereitung des Abrufs und abholen der json
+  function tabelleAusJson() {
+      fetch("/allpayments") // JSON abrufen
+      .then(empfaenger1) // Aufruf der Methode empfaenger1 (auspacken der JSON)
+      .then(empfaenger2) // Generierung der Tabelle
+  }
+
+  function empfaenger1(antwort) {
+      var json = antwort.json();
+      return json;
+  }
+
+  //FUNKTIONSAUFRUF zum Abholen der json Daten über REST API und Erzeugung einer Tabelle
+  //Schritt 3: ausgepackte-json verarbeiten und nutzen für dynamischen Tabellenerzeugung
+  function empfaenger2(json) {
+     // Ermittlung Abzahl Objekte für Tabelle und Erzeugung entsprechender Anzahl Spalten
+     var spalte = [];
+     for (var i = 0; i < json.length; i++) {
+     for (var key in json[i]) {
+     if (spalte.indexOf(key) === -1) {
+     spalte.push(key);
+     }}
+     }
+      // TABELLEN Überschriften erstellen aus den Variablennamen der Json
+     var zeile = table.insertRow(-1); // TABELLEN ZEILE.
+
+     for (var i = 0; i < spalte.length; i++) {
+     var ueberschrift = document.createElement("th"); // TABELLEN ÜBERSCHRIFT.
+     ueberschrift.innerHTML = spalte[i];
+     zeile.appendChild(ueberschrift);
+     }
+
+    // Hinzufügen notwendigen neuen Zeile
+    for (var i = 0; i < json.length; i++) {
+    zeile = table.insertRow(-1);
+
+    // Einfügen der Werte in die Zeile
+    for (var j = 0; j < spalte.length; j++) {
+    if (j == 2) {
+    var tabellenZellen = zeile.insertCell(-1);
+    var tempIBAN = json[i].iban.iban;
+    tabellenZellen.innerHTML = json[i].iban.iban;
+
+    } else {
+    var tabellenZellen = zeile.insertCell(-1);
+    tabellenZellen.innerHTML = json[i][spalte[j]];
+    }}
+
+    // Erzeugen eines Links zum Aufruf der REST DELETE Methode über Link
+    var link = json[i].id
+    var tabellenZellen = zeile.insertCell(-1);
+    tabellenZellen.innerHTML = '<a href = "#" onclick="loescheZelle('+link+');" title="delete">löschen</a>';
+    }
+
+    // Erzeugte Tabelle mit den Daten aus Json Abruf in Div-Block ausgeben.
+    var divContainer = document.getElementById("output");
+    divContainer.innerHTML = "";
+    divContainer.appendChild(table);
+}
+</script>
+</body>
+</html>

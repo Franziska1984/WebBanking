@@ -9,7 +9,6 @@
  <title> WebBanking </title>
     <meta charset="UTF-8">       
     <link href="index.css" rel="stylesheet">
-    <script src="index.js" type="module"></script>
  	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"> 
    
 </head>
@@ -17,7 +16,7 @@
 <body>
 
 <h1> Web Banking </h1>
-<h2>Big Banking Projekt</h2><br>
+<h2>created by Franzi & Marco</h2><br>
 
 <img src="banking.jpg">
 
@@ -25,12 +24,12 @@
 <h3> Hier kannst du dir eine Überweisungsvorlage anzeigen lassen:</h3>
 
  	<form action="http://localhost:8090/vorlage">
-         <button type="submit">Vorlage</button>
+         <button class= "btn1" type="submit">Vorlage</button>
     </form><br>
 	
 
 <header>
-<h3> Hier kannst du eine neue Überweisung tätigen. Bitte gib die Daten ein.</h3>
+<h3> Bitte gib hier die Daten für eine neue Überweisung an:</h3>
 
  <input id="eingabefeld1" placeholder="Empfaenger" type= "text"> <br>
  <input id="eingabefeld2" placeholder="Iban" type= "text"> <br>
@@ -39,7 +38,7 @@
  <input id="eingabefeld5" placeholder="Waehrung" type= "text"> <br>
  <input id="eingabefeld6" placeholder="Verwendungszweck" type= "text"> <br><br>
 
- <button id="btn4" type="button">Daten senden</button><br><br>
+ <button id="btn4" class= "btn4" type="button">Daten senden</button><br><br>
 </header>   
 
 
@@ -47,14 +46,11 @@
 	<div>
         ID für Einzelausgabe <input id="input2" type="text"><br><br>
     
-        <button id="btn2" type="button">Abfrage starten</button><br><br>
+        <button id="btn2" class= "btn2" type="button">Abfrage starten</button><br><br>
    
-        ID zum löschen <input id="input3" type="text"><br><br>
-
-        <button id="btn3" type="button">ID löschen</button><br><br>
    </div>
     
-<div>
+
 
 		<h3>Übersicht Kontobewegungen</h3>
 	
@@ -64,37 +60,39 @@
 		BIC:		      <span id="bic"></span><br>
 		Betrag:		      <span id="betrag"></span><br>
 		Währung:     	  <span id="waehrung"></span><br>
-		Verwendungszweck: <span id="verwendungszweck"></span>
+		Verwendungszweck: <span id="verwendungszweck"></span><br>
 		</p>
 
-<p>-----------------------------------------------------------------------------------------------------------------</p>
-		
+<header>	
+<p>       </p>
  <strong>Hier kannst du dir alle Überweisungen anzeigen lassen:</strong><br><br>
     
     <form action="http://localhost:8090/allpayments/">
-         <button type="submit">alle Überweisungen anzeigen</button>
+         <button class= "btn"type="submit">im JSON-Format</button>
     </form><br>	
     
-</div>
+    <form action="http://localhost:8090/table.html">
+		<button class= "btn" type="submit">in einer Tabelle</button>
+    </form><br>
+    
 
  <strong>Hier kannst du dir den Kontostand anzeigen lassen:<br><br>
- <span id="info"> <button id="btnK" type="button">Kontostand</button></span> Euro.</strong>
-		
-		
-<p>-----------------------------------------------------------------------------------------------------------------</p>
-
-<button id="btn5" type="button">Diagramm ausführen</button><br><br>
-   </div>
+ <span id="info"> <button id="btn6" class="btn6" type="button">Kontostand</button></span> Euro.</strong><br><br>
+ <span id="info"> <button id="btn7" class="btn7" type="button">refresh</button></span><br><br />		
+</header>
+<p>       </p>
+<button id="btn5" class="btn5" type="button">Diagramm ausführen</button><br><br>
 <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
 
+<img class= img src="WebBanking.png" alt="Overview" width="500" height="700">
 <script>
 
 
 document.getElementById("btn2").addEventListener("click", auslesen);
-document.getElementById("btn3").addEventListener("click", loeschen);
 document.getElementById("btn4").addEventListener("click", post);
-document.getElementById("btnK").addEventListener("click", kontostand);
+document.getElementById("btn6").addEventListener("click", kontostand);
 document.getElementById("btn5").addEventListener("click", diagramm);
+document.getElementById("btn7").addEventListener("click", kontostand);
 
 function auslesen () {
 	var uebergebeneID = document.getElementById("input2").value;
@@ -124,18 +122,6 @@ function empfaenger2(json) {
 	document.getElementById("betrag").innerHTML = betrag;
 	document.getElementById("waehrung").innerHTML = waehrung;
 	document.getElementById("verwendungszweck").innerHTML = verwendungszweck;
-}
-
-function loeschen () {
-	var uebergebeneID = document.getElementById("input3").value;
-	var json = "/deletePayment/"+uebergebeneID;
-    fetch(json,
-        {	
-            headers: { "Content-Type": "application/json" },
-            method: "DELETE",
-            body: json
-        }
-    ).then(alert("Ihre Überweisung wurde gelöscht."))
 }
 
 function post() {		//neuer Eintrag an REST API senden
@@ -187,7 +173,15 @@ function empfaenger3(json){
 	graphik(json);
 }
 
-function graphik(yValues){
+function graphik(yValuesU){
+	var yValues =[];
+	for (var i = 0; i < 4; i ++){
+		if (yValuesU[i]== null){	
+		yValues.push(0);
+		}else {
+			yValues.push(yValuesU[i]);
+		}
+	} 
 	var xValues = ["Franzi", "Marco", "Peggy", "Oli"];
 	var barColors = ["lightcoral", "lightblue","peachpuff","mediumaquamarine"];
 
@@ -201,10 +195,13 @@ function graphik(yValues){
     }]
   },
   		options: {
+  		scales: {
+  			yAxes:[{ticks:{suggestedMin:0}}]
+  		},
    		legend: {display: false},
    		title: {
     	display: true,
-     	text: "Überweisungen in einem Diagramm"
+     	text: "Kontostand von Franzi, Marco, Oli und Peggy in einem Diagramm"
     }
   }
 });
