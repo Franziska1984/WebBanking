@@ -12,4 +12,6 @@ public class WebBankingApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(WebBankingApplication.class, args);
 			}
+	//Runnable runnable = () -> System.out.println("Thats it");
+	//runnable.run();
 }

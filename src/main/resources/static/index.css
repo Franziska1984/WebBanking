@@ -1,6 +1,6 @@
 @charset "UTF-8";
 head,body,main,div,canvas {
-    background-color: silver;
+    background-color: #c0c0c0;
     color: teal;  
     text-align: center;
     margin-left: auto; margin-right: auto;
@@ -14,7 +14,7 @@ header {
     text-align: center;
     margin-left: auto; margin-right: auto;
 }
-.btn5,.btn6,.btn7,.btn4,.btn1,.btn2,.btn {
+#submit,.btn5,.btn6,.btn7,.btn4,.btn1,.btn2,.btn {
   background: #008080;
   background-image: -webkit-linear-gradient(top, #008080, #008080);
   background-image: -moz-linear-gradient(top, #008080, #008080);
@@ -29,20 +29,9 @@ header {
   font-size: 15px;
   padding: 0.5px 15px 0.5px 15px;
   text-decoration: none;
+  transition: background-color 0.2s;
 }
-
-.btn,.btn2,.btn1,.btn4,.btn5,.btn6,.btn7:hover {
-  background: #008080;
-  background-image: -webkit-linear-gradient(top, #008080, #008080);
-  background-image: -moz-linear-gradient(top, #008080, #008080);
-  background-image: -ms-linear-gradient(top, #008080, #008080);
-  background-image: -o-linear-gradient(top, #008080, #008080);
-  background-image: linear-gradient(to bottom, #008080, #008080);
-  text-decoration: none;
+#submit:hover,.btn:hover,.btn2:hover,.btn1:hover,.btn4:hover,.btn5:hover,.btn7:hover,.btn6:hover {
+  background: #808080;
 }
-.img {
-	text-align: center;
-    margin-left: auto; margin-right: auto;
-}
-	
 	

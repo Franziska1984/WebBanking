@@ -5,6 +5,27 @@ head,body {
     text-align: center;
     margin-left: auto; margin-right: auto;
 }
+#submit {
+  background: #008080;
+  background-image: -webkit-linear-gradient(top, #008080, #008080);
+  background-image: -moz-linear-gradient(top, #008080, #008080);
+  background-image: -ms-linear-gradient(top, #008080, #008080);
+  background-image: -o-linear-gradient(top, #008080, #008080);
+  background-image: linear-gradient(to bottom, #008080, #008080);
+  -webkit-border-radius: 28;
+  -moz-border-radius: 28;
+  border-radius: 28px;
+  font-family: Georgia;
+  color: #ffffff;
+  font-size: 15px;
+  padding: 0.5px 15px 0.5px 15px;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+#submit:hover {
+  background: #808080;
+}
 div {
     position:static;
 	left:50px;
@@ -26,32 +47,3 @@ table, th, td {
 th {
     font-weight:bold;
 }
-.btn {
-  background: #008080;
-  background-image: -webkit-linear-gradient(top, #008080, #008080);
-  background-image: -moz-linear-gradient(top, #008080, #008080);
-  background-image: -ms-linear-gradient(top, #008080, #008080);
-  background-image: -o-linear-gradient(top, #008080, #008080);
-  background-image: linear-gradient(to bottom, #008080, #008080);
-  -webkit-border-radius: 28;
-  -moz-border-radius: 28;
-  border-radius: 28px;
-  font-family: Georgia;
-  color: #ffffff;
-  font-size: 15px;
-  padding: 0.5px 15px 0.5px 15px;
-  text-decoration: none;
-}
-
-.btn:hover {
-  background: #008080;
-  background-image: -webkit-linear-gradient(top, #008080, #008080);
-  background-image: -moz-linear-gradient(top, #008080, #008080);
-  background-image: -ms-linear-gradient(top, #008080, #008080);
-  background-image: -o-linear-gradient(top, #008080, #008080);
-  background-image: linear-gradient(to bottom, #008080, #008080);
-  text-decoration: none;
-}
- 
-
-
